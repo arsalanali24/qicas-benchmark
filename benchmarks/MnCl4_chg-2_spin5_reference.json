@@ -1,0 +1,48 @@
+{
+  "_comment": "Benchmark reference: MnCl4 sextet. Verified QICAS result.",
+  "name": "MnCl4_chg-2_spin5",
+  "metal": "Mn",
+  "ligand": "Cl",
+  "n_ligands": 4,
+  "charge": -2,
+  "spin_2s": 5,
+  "geometry": "tet",
+  "dist_ang": 2.35,
+  "spin_cat": "high",
+  "M": 100,
+  "sweeps": 30,
+  "window_size": 26,
+  "status": "OK",
+  "autocas_reference": {
+    "ne": 17,
+    "no": 10,
+    "source": "real_m250"
+  },
+  "qicas": {
+    "n_active": 14,
+    "n_active_e": 21,
+    "fqi_initial": 1.051,
+    "fqi_final": 0.100,
+    "fqi_reduction": 0.905,
+    "active_rel": [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
+  },
+  "entropies_initial": {
+    "values": [0.509,0.950,1.090,1.093,1.095,1.091,1.096,1.099,1.099,1.099,
+               0.896,0.958,0.933,0.711,0.294,0.102,0.108,0.114,0.014,0.013,
+               0.014,0.087,0.022,0.016,0.124,0.145],
+    "d_cas_from_plateau": 14
+  },
+  "entropies_qicas": [0.509,0.910,1.082,1.088,1.089,1.082,1.096,1.099,1.099,1.099,
+                      0.892,0.939,0.907,0.704,0.010,0.009,0.010,0.007,0.008,0.009,
+                      0.007,0.010,0.008,0.004,0.011,0.010],
+  "goal1_casci": {
+    "delta_mha": -239.3
+  },
+  "validation": {
+    "metric_A_autocas_mha": -1259.6,
+    "metric_A_qicas_mha": -50.0,
+    "metric_B_autocas_mha": 2024.3,
+    "metric_B_qicas_mha": 825.8,
+    "reference": "DMRG(M=500) in 26-orbital window"
+  }
+}

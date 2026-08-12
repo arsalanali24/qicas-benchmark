@@ -1,0 +1,21 @@
+{
+  "_comment": "Known AutoCAS M=250 active spaces. Key = Metal_Ligand_charge_2S_geometry",
+  "_source": "autocas-m250-benchmark results",
+
+  "Mn_Cl_-2_5_tet":   {"ne":17,"no":10,"parity_ok":true},
+  "Mn_Br_-2_5_tet":   {"ne":17,"no":10,"parity_ok":true},
+  "Mn_Br_-1_0_oct":   {"ne":18,"no":13,"parity_ok":true},
+  "Mn_Br_-1_4_oct":   {"ne":19,"no":13,"parity_ok":true},
+  "V_Br_-3_2_oct":    {"ne":10,"no":6, "parity_ok":true},
+  "V_Br_-2_1_oct":    {"ne":4, "no":3, "parity_ok":false},
+  "Ni_Br_-4_2_oct":   {"ne":10,"no":5, "parity_ok":true},
+  "Fe_Br_-1_3_oct":   {"ne":15,"no":13,"parity_ok":true},
+  "Mo_Br_0_4_tet":    {"ne":26,"no":21,"parity_ok":true},
+  "Ru_Br_-2_4_tet":   {"ne":4, "no":6, "parity_ok":true},
+  "Ir_Br_-3_4_oct":   {"ne":4, "no":3, "parity_ok":true},
+  "Ti_Br_-3_1_tet":   {"ne":5, "no":4, "parity_ok":true},
+  "Rh_Br_-1_0_tet":   {"ne":20,"no":16,"parity_ok":true},
+  "Pd_Br_-2_0_sq_pl": {"ne":20,"no":14,"parity_ok":true},
+  "Ir_Br_-3_0_oct":   {"ne":10,"no":7, "parity_ok":true},
+  "Pt_Br_-2_0_sq_pl": {"ne":12,"no":10,"parity_ok":true}
+}

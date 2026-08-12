@@ -1,0 +1,27 @@
+{
+  "_comment": "Example input JSON for a new system. Fill in required fields and run: python run_qicas.py --from_json new_system.json",
+
+  "name": "FeCl4_chg-1_spin4_tet",
+  "metal": "Fe",
+  "ligand": "Cl",
+  "n_ligands": 4,
+  "charge": -1,
+  "spin_2s": 4,
+  "geometry": "tet",
+
+  "dist_ang": 2.19,
+  "xyz_file": null,
+
+  "autocas_reference": {
+    "ne": 15,
+    "no": 9,
+    "source": "real_m250"
+  },
+
+  "_optional_overrides": {
+    "_comment": "Remove leading _ to activate these overrides",
+    "_M": 100,
+    "_sweeps": 30,
+    "_window_size": 26
+  }
+}

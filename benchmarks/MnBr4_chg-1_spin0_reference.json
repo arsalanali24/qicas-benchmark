@@ -1,0 +1,46 @@
+{
+  "_comment": "Benchmark reference: MnBr4 singlet (low spin). Verified QICAS result.",
+  "name": "MnBr4_chg-1_spin0",
+  "metal": "Mn",
+  "ligand": "Br",
+  "n_ligands": 6,
+  "charge": -1,
+  "spin_2s": 0,
+  "geometry": "oct",
+  "dist_ang": 2.63,
+  "spin_cat": "low",
+  "M": 100,
+  "sweeps": 35,
+  "window_size": 22,
+  "status": "OK",
+  "autocas_reference": {
+    "ne": 18,
+    "no": 13,
+    "source": "real_m250"
+  },
+  "qicas": {
+    "n_active": 14,
+    "n_active_e": 24,
+    "fqi_initial": 0.510,
+    "fqi_final": 0.203,
+    "fqi_reduction": 0.602,
+    "active_rel": [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
+  },
+  "entropies_initial": {
+    "values": [1.091,1.259,1.099,1.098,1.097,1.048,1.098,0.954,1.098,1.071,
+               1.099,1.095,1.096,1.097,0.014,0.072,0.098,0.103,0.045,0.069,
+               0.076,0.013,0.014,0.006],
+    "d_cas_from_plateau": 14
+  },
+  "goal1_casci": {
+    "delta_mha": -1.36
+  },
+  "validation": {
+    "metric_A_autocas_mha": -54.3,
+    "metric_A_qicas_mha": -4.8,
+    "metric_B_autocas_mha": 334.6,
+    "metric_B_qicas_mha": 112.8,
+    "_note_autocas": "AutoCAS CASSCF converged to wrong spin state (septet S2=6.0)",
+    "reference": "DMRG(M=500) in 20-orbital window"
+  }
+}

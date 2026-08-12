@@ -1,0 +1,8 @@
+results/
+logs/
+*.npy
+*.err
+*.out
+submit_*.slurm
+__pycache__/
+*.pyc

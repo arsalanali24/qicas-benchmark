@@ -1,0 +1,38 @@
+{
+  "_comment": "Benchmark reference: VBr6 triplet (medium spin). Verified QICAS result.",
+  "name": "VBr6_chg-3_spin2",
+  "metal": "V",
+  "ligand": "Br",
+  "n_ligands": 6,
+  "charge": -3,
+  "spin_2s": 2,
+  "geometry": "oct",
+  "dist_ang": 2.318,
+  "spin_cat": "medium",
+  "M": 100,
+  "sweeps": 30,
+  "window_size": 24,
+  "status": "OK",
+  "autocas_reference": {
+    "ne": 10,
+    "no": 6,
+    "source": "real_m250"
+  },
+  "qicas": {
+    "n_active": 10,
+    "n_active_e": 18,
+    "fqi_initial": null,
+    "fqi_final": null,
+    "active_rel": [0,1,2,3,4,5,6,7,8,9]
+  },
+  "goal1_casci": {
+    "delta_mha": -76.0
+  },
+  "validation": {
+    "metric_A_autocas_mha": -14.2,
+    "metric_A_qicas_mha": -14.0,
+    "metric_B_autocas_mha": 282.3,
+    "metric_B_qicas_mha": 282.1,
+    "reference": "DMRG(M=500) in 22-orbital window"
+  }
+}
