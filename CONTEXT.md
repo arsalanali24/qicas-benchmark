@@ -227,3 +227,11 @@ sbatch submit_<system_name>.slurm
 squeue -u hpcmual
 tail -f logs/qicas_<system>_*.out
 ```
+
+## Spin Ladder Rule — Alternating Charge
+
+For MnBr4 spin ladder, charge alternates:
+- Odd 2S (1,3,5): charge=-2 → 167 electrons ✅
+- Even 2S (0,2,4): charge=-1 → 166 electrons ✅
+
+General rule: verify (n_electrons mod 2) == (spin_2s mod 2) before submitting.
