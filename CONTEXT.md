@@ -169,3 +169,25 @@ Upload `CONTEXT.md` and say:
 
 Claude will generate correct parameters. If Claude suggests M≠100 or window_size<22,
 that is wrong — refer it back to the CRITICAL sections above.
+
+---
+
+## Common Chemistry Mistakes to Avoid
+
+Always verify electron/spin consistency before submitting:
+- Total electrons = sum(atomic numbers) - charge
+- Fe=26, Mn=25, V=23, Ni=28, Cr=24, Co=27, Cu=29
+- Cl=17, Br=35, F=9, O=8
+- (n_electrons mod 2) must equal (spin_2s mod 2)
+
+Common valid combinations:
+- [FeCl4]²⁻ charge=-2, 2S=4 (Fe²⁺ d⁶ quintet) ✅
+- [FeCl4]⁻  charge=-1, 2S=5 (Fe³⁺ d⁵ sextet)  ✅
+- [MnCl4]²⁻ charge=-2, 2S=5 (Mn²⁺ d⁵ sextet)  ✅
+- [VBr6]³⁻  charge=-3, 2S=2 (V³⁺ d² triplet)   ✅
+
+## Note on S²=6 in CASSCF output
+
+If CASSCF shows S²=6.0 for a quintet (2S=4) system — this means
+CASSCF converged to wrong spin state (septet). This is a known
+AutoCAS failure mode. QICAS active space avoids this in most cases.
