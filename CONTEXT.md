@@ -191,3 +191,39 @@ Common valid combinations:
 If CASSCF shows S²=6.0 for a quintet (2S=4) system — this means
 CASSCF converged to wrong spin state (septet). This is a known
 AutoCAS failure mode. QICAS active space avoids this in most cases.
+
+---
+
+## Quick Start Commands for Every New System
+
+After getting the JSON from Claude, do exactly this on Noctua2:
+
+```bash
+# 1. Login
+ssh hpcmual@fe.noctua2.pc2.uni-paderborn.de
+
+# 2. Go to pipeline directory and activate environment
+cd ~/qicas_pipeline
+source ~/.block2_fix/block2_env.sh
+
+# 3. Create JSON file (paste your system values)
+cat > my_system.json << 'JSONEOF'
+{
+  "metal": "Cr",
+  "ligand": "Cl",
+  "charge": -2,
+  "spin_2s": 4,
+  "geometry": "tet"
+}
+JSONEOF
+
+# 4. Generate SLURM script
+python run_qicas.py --from_json my_system.json
+
+# 5. Submit
+sbatch submit_<system_name>.slurm
+
+# 6. Monitor
+squeue -u hpcmual
+tail -f logs/qicas_<system>_*.out
+```
