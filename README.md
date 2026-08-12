@@ -7,7 +7,7 @@ metal complexes and comparing against AutoCAS.
 
 ```bash
 # Clone on Noctua2
-git clone <repo_url> && cd qicas_pipeline
+git clone https://github.com/arsalanali24/qicas-benchmark.git && cd qicas_pipeline
 
 # Activate environment (auto-detected, but do this first)
 source ~/.block2_fix/block2_env.sh
