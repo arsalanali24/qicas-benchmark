@@ -23,99 +23,149 @@ One pipeline run produces:
 Login:    hpcmual@fe.noctua2.pc2.uni-paderborn.de
 Account:  hpc-prf-qehpc
 Env:      source ~/.block2_fix/block2_env.sh
-Work dir: ~/activeml/qio/QIO-master/examples_benchmark/pilot/benchmark_geom/
+Repo:     ~/qicas_pipeline/
+Script:   ~/qicas_pipeline/scripts/qicas_casscf_benchmark.py
 ```
 
 **Upload files from Windows:**
 ```powershell
-scp <file> hpcmual@fe.noctua2.pc2.uni-paderborn.de:~/activeml/qio/QIO-master/examples_benchmark/pilot/benchmark_geom/<file>
+scp <file> hpcmual@fe.noctua2.pc2.uni-paderborn.de:~/qicas_pipeline/<file>
 ```
+
+---
+
+## ⚠️ CRITICAL — DMRG Parameters (NEVER CHANGE THESE)
+
+| Spin (2S) | Category | M | sweeps | window_size | time | mem |
+|---|---|---|---|---|---|---|
+| ≥ 4 | HIGH | **100** | **30** | **26** | 8h | 48G |
+| 2–3 | MEDIUM | **100** | **30** | **24** | 6h | 32G |
+| 0–1 | LOW | **100** | **35** | **22** | 6h | 32G |
+
+- **M=100 always** — never 250, never 500. M=500 is only for separate Metric A validation.
+- **window_size is never 4** — minimum is 22, maximum 26.
+- These are auto-selected by `run_qicas.py` — do not override.
+
+---
+
+## ⚠️ CRITICAL — Working Directory and Script Usage
+
+```
+Login node only:  python run_qicas.py --from_json system.json
+                  → generates SLURM script, does NOT run calculations
+
+SLURM job calls:  scripts/qicas_casscf_benchmark.py   (the real pipeline)
+                  → never call run_qicas.py inside a SLURM job
+```
+
+All files live in `~/qicas_pipeline/` — never in `~/activeml/qio/.../benchmark_geom/`
 
 ---
 
 ## How to Start a New Calculation
 
-**Option A — New system from scratch:**
-```bash
-python run_qicas.py --new
-```
-Asks: metal, ligand, charge, spin (2S), geometry. Auto-fills everything else.
-
-**Option B — From an existing JSON file:**
-```bash
-python run_qicas.py --from_json my_system.json
-```
-Reads the JSON, validates it, generates SLURM script, ready to submit.
-
-**Option C — Run benchmark test cases first:**
-```bash
-python run_qicas.py --test
-```
-Runs 3 known benchmark systems (MnCl4, VBr6, MnBr4low) and checks results
-match reference values. Confirms pipeline is working before new calculations.
-
----
-
-## JSON Input Format
-
-To run a new system, create a JSON file with this structure:
-
+**Step 1 — Create input JSON** (5 fields required):
 ```json
 {
-  "name": "Fe_Cl4_chg-1_spin4",
   "metal": "Fe",
   "ligand": "Cl",
-  "n_ligands": 4,
   "charge": -1,
   "spin_2s": 4,
-  "geometry": "tet",
-  "dist_ang": 2.19,
-  "xyz_file": null,
-  "autocas_reference": {
-    "ne": 15, "no": 9
-  }
+  "geometry": "tet"
 }
 ```
+Optional: `dist_ang`, `xyz_file`, `n_ligands`, `autocas_reference`
 
-**Minimal required fields:** `metal`, `ligand`, `charge`, `spin_2s`, `geometry`
+**Step 2 — On login node, generate SLURM script:**
+```bash
+cd ~/qicas_pipeline
+source ~/.block2_fix/block2_env.sh
+python run_qicas.py --from_json my_system.json
+```
 
-**Optional fields:**
-- `dist_ang` — bond distance in Å (auto-filled from database if omitted)
-- `xyz_file` — path to DFT-optimized XYZ file (overrides `dist_ang`)
-- `autocas_reference` — known AutoCAS result for comparison
-- `M`, `sweeps`, `window_size` — DMRG parameters (auto-selected by spin if omitted)
+**Step 3 — Submit:**
+```bash
+sbatch submit_<system_name>.slurm
+squeue -u hpcmual
+```
+
+**Step 4 — Check results:**
+```bash
+python run_qicas.py --list
+```
 
 ---
 
-## Benchmark Reference Systems
+## Benchmark Reference Systems (verified results)
 
-Three verified systems are included in `benchmarks/` for testing:
-
-| System | 2S | QICAS result | Metric A |
+| System | 2S | Category | QICAS active space |
 |---|---|---|---|
-| MnCl4 (sextet) | 5 | (21e,14o) | −50.0 mHa |
-| VBr6 (triplet) | 2 | (18e,10o) | −14.0 mHa |
-| MnBr4 (singlet) | 0 | (24e,14o) | −4.8 mHa |
+| MnCl4 (sextet) | 5 | HIGH | (21e,14o) |
+| VBr6 (triplet) | 2 | MEDIUM | (18e,10o) |
+| MnBr4 (singlet) | 0 | LOW | (24e,14o) |
 
 Run `python run_qicas.py --test` to verify these before new calculations.
 
 ---
 
-## Output
+## Bond Distance Defaults (auto-filled if not specified)
 
-Each run produces a JSON file in `results/` with:
-- Active space selected by QICAS
-- Entropies before/after F_QI rotation
-- CASCI energy delta (QICAS vs HF orbitals)
-- CASSCF convergence comparison
+| Metal | Ligand | Geometry | Distance (Å) |
+|---|---|---|---|
+| Mn | Cl | tet | 2.35 |
+| Mn | Br | tet | 2.50 |
+| Mn | Br | oct | 2.63 |
+| Fe | Cl | tet | 2.19 |
+| Fe | Br | oct | 2.50 |
+| V | Br | oct | 2.318 |
+| Ni | Br | oct | 2.53 |
+| Cr | Cl | tet | 2.24 |
+
+---
+
+## What run_qicas.py Generates (example for FeCl4 quintet)
+
+```bash
+# Input JSON (5 required fields):
+{
+  "metal": "Fe",
+  "ligand": "Cl",
+  "charge": -1,
+  "spin_2s": 4,
+  "geometry": "tet"
+}
+
+# Auto-filled values:
+# dist_ang = 2.19 (from database)
+# n_ligands = 4 (from tet geometry)
+# M = 100, sweeps = 30, window_size = 26 (from spin_2s=4, HIGH spin)
+# time = 8h, mem = 48G
+
+# Generated SLURM script calls:
+python scripts/qicas_casscf_benchmark.py \
+    --system_name 'Fe_Cl4_chg-1_spin4_tet' \
+    --metal Fe --ligand Cl --n_ligands 4 \
+    --charge -1 --spin_2s 4 --geometry tet \
+    --M 100 --sweeps 30 --window_size 26 \
+    --dist_ang 2.19 --out_dir results --save_mo
+```
+
+---
+
+## GitHub Repository
+
+```
+https://github.com/arsalanali24/qicas-benchmark
+git clone https://github.com/arsalanali24/qicas-benchmark.git
+```
 
 ---
 
 ## In a New Chat Session
 
 Upload `CONTEXT.md` and say:
-> "I am running the QICAS pipeline. Read CONTEXT.md.
->  I want to run [system name] — here is my JSON: [paste JSON]"
+> "I am running QICAS. Read CONTEXT.md carefully especially the CRITICAL sections.
+>  Generate input JSON and SLURM script for: [metal, ligand, charge, 2S, geometry]"
 
-Claude will immediately generate the correct SLURM script and commands.
-No background explanation needed.
+Claude will generate correct parameters. If Claude suggests M≠100 or window_size<22,
+that is wrong — refer it back to the CRITICAL sections above.
